@@ -1,8 +1,32 @@
 version: "3.8"
 
 services:
-  rabbitmq:
-    image: rabbitmq
-    container_name: habraparser_rabbitmq
-    ports:
-    - "5672:5672"
+    postgres:
+        container_name: habraparser_postgres
+        image: postgres:12.3-alpine
+        volumes: 
+        - pg_data:/var/lib/postgresql/data
+        ports: 
+        - "5432:5432"
+        env_file: 
+        - env
+
+    rabbitmq:
+        container_name: habraparser_rabbitmq
+        image: rabbitmq
+        ports:
+            - "5672:5672"
+        depends_on:
+            - postgres
+
+  # django:
+  #   container_name: habraparser_django
+  #   build:
+  #     context: ./
+  #   volumes:
+  #     - ./:/opt/app
+  #   ports:
+  #     - "8000:8000"
+
+volumes: 
+    pg_data:
