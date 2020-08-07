@@ -1,25 +1,29 @@
-from celery.schedules import crontab
-from celery.utils.log import get_task_logger
 import os
+
 from celery import Celery
 from celery import signals
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'habraparser.settings')
+from celery.schedules import crontab
 
-app = Celery('habraparser')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "habraparser.settings")
 
-app.config_from_object('django.conf:settings', namespace='CELERY')
+app = Celery("habraparser")
+
+app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.autodiscover_tasks()
 
 
 @signals.setup_logging.connect
 def on_celery_setup_logging(**kwargs):
+    """Отключение встроенного логирования"""
     pass
 
 
-# app.conf.beat_schedule = {
-#     'every-minute': {
-#         'task': 'core.tasks.parse_pages_list',
-#         'schedule': crontab(),
-#     },
-# }
+app.conf.timezone = "Europe/Moscow"
+
+app.conf.beat_schedule = {
+    "parse_daily": {
+        "task": "core.tasks.parse_daily",
+        "schedule": crontab(minute=0, hour=15),
+    }
+}

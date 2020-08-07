@@ -1,16 +1,14 @@
 # habraparser
 
+###Запуск проекта
 `docker-compose up`
-
-`makemigrations`
-
-`migrate`
-
-`createsuperuser`
-
-
-`celery -A habraparser worker -l info`
-
-`celery -A habraparser beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler`
-
-schedule task in admin panel
+###Остановка проекта
+`docker-compose down`
+###Запуск парсинга всех лучших статей за день
+`curl --location --request GET 'http://127.0.0.1:8000/api/force_parsing/'`
+###Парсинг конкретной статьи
+`curl --location --request POST 'http://127.0.0.1:8000/api/force_parsing/' --form 'url=https://habr.com/ru/post/514304/'`
+###Листинг статей
+`curl --location --request GET 'http://127.0.0.1:8000/api/articles/'`
+###Отдельная статья
+`curl --location --request GET 'http://127.0.0.1:8000/api/articles/1/'`
