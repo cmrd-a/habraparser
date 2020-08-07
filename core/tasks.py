@@ -88,12 +88,8 @@ def parse_post(post_url):
 
     if not existed:
         soup = make_soup(post_url)
-        try:
-            title = soup.find("h1", class_="post__title_full").text.strip()
-            body = soup.find("div", class_="post__text").text.strip()
-        except AttributeError:
-            logger.error(f"{post_url} parsing error")
-            return
+        title = soup.find("h1", class_="post__title_full").text.strip()
+        body = soup.find("div", class_="post__text").text.strip()
         Article.objects.create(url=post_url, title=title, body=body)
         logger.info(f"{post_url} successfuly saved")
     else:
