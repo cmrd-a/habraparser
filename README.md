@@ -13,4 +13,4 @@
 ### Отдельная статья
 `curl --location --request GET 'http://127.0.0.1:8000/api/articles/1/'`
 
-Автоматический парсинг [запланирован](habraparser/celeryapp.py) на каждый день в 15:00
+Автоматический парсинг [запланирован](habraparser/celeryapp.py#L27) на каждый день в 15:00
